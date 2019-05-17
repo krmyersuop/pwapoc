@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded",function(){
 function renderToDo() {
 
     if ('caches' in window) {
-      const url = "${window.location.origin}/apis/todo.json";
+      const url = window.location.origin + '/apis/todo.json';
       caches.match(url)
         .then((response) => {
             if (response) {
