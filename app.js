@@ -25,6 +25,7 @@ function renderToDo() {
             })
         .then(function(tasklist) {
             const html = `
+            <div>This is from CACHE!</div>            
             <ul class="task-list">
             ${tasklist.map(task => 
                 `<li class="list-item">
