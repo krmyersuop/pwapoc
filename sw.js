@@ -39,7 +39,7 @@ self.addEventListener('fetch', event => {
 	if (event.request.url.includes('/apis/')) {
 		event.respondWith(
 			caches.open(dataCacheName).then((cache) => {
-			  return fetch(event.request)
+				return fetch(event.request)
 				  .then((response) => {
 				  	let responseTime = JSON.stringify(new Date());
 				  	let init = {
@@ -59,36 +59,35 @@ self.addEventListener('fetch', event => {
 					return cache.match(event.request);
 				  });
 		}));
-		return;
-	}
-
-	event.respondWith(
-		caches.match(event.request)
-		.then(response => {
-			if(response){
-				console.log('SW found in cache', event.request.url, response);
-				return response;
-			}
-
-			let requestClone = event.request.clone();
-			return fetch(requestClone)
+	} else {
+		event.respondWith(
+			caches.match(event.request)
 			.then(response => {
-				if(!response){
-					console.log('SW no response from fetch');
+				if(response){
+					console.log('SW found in cache', event.request.url, response);
 					return response;
 				}
-					let responseClone = response.clone();
-					caches.open(cacheName).then(cache => {
-						cache.put(event.request, responseClone);
-						console.log('SW New Data Cached', event.request.url);
-						return response;
-					});
-				})
-			.catch(error => {
-				console.log('SW Error fetching and caching new data', error)
+
+				let requestClone = event.request.clone();
+				return fetch(requestClone)
+					.then(response => {
+						if(!response){
+							console.log('SW no response from fetch');
+							return response;
+						}
+							let responseClone = response.clone();
+							caches.open(cacheName).then(cache => {
+								cache.put(event.request, responseClone);
+								console.log('SW New Data Cached', event.request.url);
+								return response;
+							});
+						})
+					.catch(error => {
+						console.log('SW Error fetching and caching new data', error)
+					})
 			})
-		})
-	);
+		);
+	}
 });
 
 self.addEventListener('notificationclose', event=>{
