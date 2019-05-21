@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded",function(){
 function getToDo() {
 
     if ('caches' in window) {
-      const url = /*window.location.origin +*/ '/apis/todo.json';
+      const url = window.location.pathname + 'apis/todo.json';
       caches.match(url)
         .then(renderToDo);
     }
@@ -30,7 +30,7 @@ function renderToDo(response) {
   if (response) {
     const now = new Date();
     const responseTime = new Date(JSON.parse(response.headers.get("x-responseTime")));
-    const cacheMessage = Math.floor((now - responseTime)/1000) > 30? `<span>AS OF ${responseTime}</span>`: '';
+    const cacheMessage = Math.floor((now - responseTime)/1000) > 30? `<span style="font-size:smaller;color:red">AS OF ${responseTime}</span>`: '';
     response.json()
       .then(tasklist => {
         const listHtml = `
@@ -46,7 +46,7 @@ function renderToDo(response) {
           ).join('')}
           </ul>
           `;
-          document.querySelector('#todo').innerHTML = cacheMessage + listHtml;
+          document.querySelector('#todo').innerHTML = listHtml + cacheMessage;
       });
   }
 }
