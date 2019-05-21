@@ -14,21 +14,20 @@ document.addEventListener("DOMContentLoaded",function(){
 
 function getToDo() {
 
-    /*if ('caches' in window) {
+    if ('caches' in window) {
       const url = window.location.origin + '/apis/todo.json';
       caches.match(url)
         .then((response) => {
             if (response) {
               return response.json();
             }
-            return null;
-            })
+        })
         .then(renderToDo)
         .catch((err) => {
             console.error('Error getting data from cache', err);
             return null;
         });
-    }*/
+    }
 
     setTimeout(function(){ 
         fetch("apis/todo.json")
@@ -36,7 +35,7 @@ function getToDo() {
             return response.json();
         })
         .then(renderTodo);
-    }, 1000);
+    }, 3000);
 }
 
 function renderToDo(tasklist) {
