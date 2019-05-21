@@ -45,8 +45,11 @@ self.addEventListener('fetch', event => {
 				  	let init = {
 						status: response.status,
 						statusText: response.statusText,
-						headers: {'X-responseTime': responseTime }
+						headers: {'x-responseTime': responseTime }
 					};
+					response.headers.forEach(function(v,k) {
+						init.headers[k] = v;
+					});
 				  	let modifiedResponse = new Response(response.body, init);
 					if (modifiedResponse.status === 200) {
 					  cache.put(event.request.url, modifiedResponse.clone());
