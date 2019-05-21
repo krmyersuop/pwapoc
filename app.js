@@ -17,16 +17,12 @@ function getToDo() {
     if ('caches' in window) {
       const url = window.location.origin + '/apis/todo.json';
       caches.match(url)
-        .then(renderToDo)
-        .catch((err) => {
-            console.error('Error getting data from cache', err);
-            return null;
-        });
+        .then(renderToDo);
     }
 
     setTimeout(function(){ 
         fetch("apis/todo.json")
-        .then(renderToDo);
+          .then(renderToDo);
     }, 3000);
 }
 
@@ -34,11 +30,11 @@ function renderToDo(response) {
   if (response) {
     const now = new Date();
     const responseTime = new Date(JSON.parse(response.headers.get("x-responseTime")));
+    const cacheMessage = Math.floor((now - responseTime)/1000) > 30? `<span>AS OF ${responseTime}</span>`: '';
     response.json()
       .then(tasklist => {
-        const html = `
+        const listHtml = `
         <ul class="task-list">
-        <li>This is from CACHE!</li>
         ${tasklist.map(task => 
               `<li class="list-item">
               <div class="due">
@@ -50,7 +46,7 @@ function renderToDo(response) {
           ).join('')}
           </ul>
           `;
-          document.querySelector('#todo').innerHTML = html;
+          document.querySelector('#todo').innerHTML = cacheMessage + listHtml;
       });
   }
 }
