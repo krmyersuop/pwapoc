@@ -41,10 +41,17 @@ self.addEventListener('fetch', event => {
 			caches.open(dataCacheName).then((cache) => {
 			  return fetch(event.request)
 				  .then((response) => {
-					if (response.status === 200) {
-					  cache.put(event.request.url, response.clone());
+				  	let responseTime = JSON.stringify(new Date());
+				  	let init = {
+						status: response.status,
+						statusText: response.statusText,
+						headers: {'X-responseTime': responseTime }
+					};
+				  	let modifiedResponse = new Response(response.body, init);
+					if (modifiedResponse.status === 200) {
+					  cache.put(event.request.url, modifiedResponse.clone());
 					}
-					return response;
+					return modifiedResponse;
 				  }).catch((err) => {
 					return cache.match(event.request);
 				  });
