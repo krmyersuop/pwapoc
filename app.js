@@ -34,7 +34,7 @@ function getToDo() {
         .then(function(response) {
             return response.json();
         })
-        .then(renderTodo);
+        .then(renderToDo);
     }, 3000);
 }
 
