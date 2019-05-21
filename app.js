@@ -17,11 +17,6 @@ function getToDo() {
     if ('caches' in window) {
       const url = window.location.origin + '/apis/todo.json';
       caches.match(url)
-        .then((response) => {
-            if (response) {
-              return response.json();
-            }
-        })
         .then(renderToDo)
         .catch((err) => {
             console.error('Error getting data from cache', err);
@@ -31,27 +26,29 @@ function getToDo() {
 
     setTimeout(function(){ 
         fetch("apis/todo.json")
-        .then(function(response) {
-            return response.json();
-        })
         .then(renderToDo);
     }, 3000);
 }
 
-function renderToDo(tasklist) {
-  const html = `
-  <ul class="task-list">
-  <li>This is from CACHE!</li>
-  ${tasklist.map(task => 
-        `<li class="list-item">
-        <div class="due">
-            <div class="due-label">Due</div>
-            <div class="due-date">${task.due}</div>
-        </div>
-        <a href="${task.url}">${task.label}</a>
-        </li>`
-    ).join('')}
-    </ul>
-    `;
-    document.querySelector('#todo').innerHTML = html;
+function renderToDo(response) {
+  if (response) {
+    const now = new Date();
+    const responseTime = new Date(JSON.parse(response.headers.get("x-responseTime")));
+    const tasklist = response.json();
+    const html = `
+    <ul class="task-list">
+    <li>This is from CACHE!</li>
+    ${tasklist.map(task => 
+          `<li class="list-item">
+          <div class="due">
+              <div class="due-label">Due</div>
+              <div class="due-date">${task.due}</div>
+          </div>
+          <a href="${task.url}">${task.label}</a>
+          </li>`
+      ).join('')}
+      </ul>
+      `;
+      document.querySelector('#todo').innerHTML = html;
+  }
 }
