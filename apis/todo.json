@@ -1,22 +1,18 @@
-{
-    "fetched": "\"2001-01-01T00:00:00\"",
-    "tasks":
-    [
-        {
-            "due": "May 18",
-            "url": "course208_w1.html",
-            "label": "MTH/208 Week-1 Discussion"
-        },
-        {
-            "due": "May 18",
-            "url": "course208_w2.html",
-            "label": "MTH/208 Week-1 Chapter 1 reading assignment"
-        },
-        {
-            "due": "May 20",
-            "url": "course.html",
-            "label": "MTH/208 Week-1 Chapter 2 lorem ipsum dolar sit amet something"
-        }
-    ]
-}
+[
+    {
+        "due": "May 18",
+        "url": "course208_w1.html",
+        "label": "MTH/208 Week-1 Discussion"
+    },
+    {
+        "due": "May 18",
+        "url": "course208_w2.html",
+        "label": "MTH/208 Week-1 Chapter 1 reading assignment"
+    },
+    {
+        "due": "May 20",
+        "url": "course.html",
+        "label": "MTH/208 Week-1 Chapter 2 lorem ipsum dolar sit amet something"
+    }
+]
 
