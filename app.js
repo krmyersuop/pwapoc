@@ -35,7 +35,7 @@ function renderToDo(response) {
       .then(tasklist => {
         const listHtml = `
         <ul class="task-list">
-          <li style="font-size:smaller;${responseTimeStyle}">(as of ${responseTime}</li>
+          <li style="font-size:smaller;text-align:center;${responseTimeStyle}">as of ${responseTime}</li>
           ${tasklist.map(task => 
               `<li class="list-item">
               <div class="due">
