@@ -23,7 +23,7 @@ function getToDo() {
     setTimeout(function(){ 
         fetch("apis/todo.json")
           .then(renderToDo);
-    }, 3000);
+    }, 5000);
 }
 
 function renderToDo(response) {
