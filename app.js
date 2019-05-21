@@ -30,12 +30,13 @@ function renderToDo(response) {
   if (response) {
     const now = new Date();
     const responseTime = new Date(JSON.parse(response.headers.get("x-responseTime")));
-    const cacheMessage = Math.floor((now - responseTime)/1000) > 30? `<span style="font-size:smaller;color:red">AS OF ${responseTime}</span>`: '';
+    const responseTimeStyle = Math.floor((now - responseTime)/1000) > 30? 'color:red': '';
     response.json()
       .then(tasklist => {
         const listHtml = `
         <ul class="task-list">
-        ${tasklist.map(task => 
+          <li style="font-size:smaller;${responseTimeStyle}">(as of ${responseTime}</li>
+          ${tasklist.map(task => 
               `<li class="list-item">
               <div class="due">
                   <div class="due-label">Due</div>
@@ -46,7 +47,7 @@ function renderToDo(response) {
           ).join('')}
           </ul>
           `;
-          document.querySelector('#todo').innerHTML = listHtml + cacheMessage;
+          document.querySelector('#todo').innerHTML = listHtml;
       });
   }
 }
