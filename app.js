@@ -9,10 +9,10 @@ if('serviceWorker' in navigator) {
 }
 
 document.addEventListener("DOMContentLoaded",function(){
-    renderToDo();
+    getToDo();
 });
 
-function renderToDo() {
+function getToDo() {
 
     /*if ('caches' in window) {
       const url = window.location.origin + '/apis/todo.json';
@@ -23,23 +23,7 @@ function renderToDo() {
             }
             return null;
             })
-        .then(function(tasklist) {
-            const html = `
-            <ul class="task-list">
-            <li>This is from CACHE!</li>
-            ${tasklist.map(task => 
-                `<li class="list-item">
-                <div class="due">
-                    <div class="due-label">Due</div>
-                    <div class="due-date">${task.due}</div>
-                </div>
-                <a href="${task.url}">${task.label}</a>
-                </li>`
-            ).join('')}
-            </ul>
-            `;
-            document.querySelector('#todo').innerHTML = html;
-        })
+        .then(renderToDo)
         .catch((err) => {
             console.error('Error getting data from cache', err);
             return null;
@@ -51,21 +35,24 @@ function renderToDo() {
         .then(function(response) {
             return response.json();
         })
-        .then(function(tasklist) {
-            const html = `
-                <ul class="task-list">
-                ${tasklist.map(task => 
-                    `<li class="list-item">
-                    <div class="due">
-                        <div class="due-label">Due</div>
-                        <div class="due-date">${task.due}</div>
-                    </div>
-                    <a href="${task.url}">${task.label}</a>
-                    </li>`
-                ).join('')}
-                </ul>
-                `;
-            document.querySelector('#todo').innerHTML = html;
-        });
+        .then(renderTodo);
     }, 1000);
+}
+
+function renderToDo(tasklist) {
+  const html = `
+  <ul class="task-list">
+  <li>This is from CACHE!</li>
+  ${tasklist.map(task => 
+        `<li class="list-item">
+        <div class="due">
+            <div class="due-label">Due</div>
+            <div class="due-date">${task.due}</div>
+        </div>
+        <a href="${task.url}">${task.label}</a>
+        </li>`
+    ).join('')}
+    </ul>
+    `;
+    document.querySelector('#todo').innerHTML = html;
 }
