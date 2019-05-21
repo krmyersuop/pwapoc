@@ -29,7 +29,7 @@ function getToDo() {
 function renderToDo(response) {
   if (response) {
     const now = new Date();
-    const responseTime = new Date(JSON.parse(response.headers.get("x-responseTime")));
+    const responseTime = response.headers.has("x-responseTime")? new Date(JSON.parse(response.headers.get("x-responseTime"))): now;
     const responseTimeStyle = Math.floor((now - responseTime)/1000) > 30? 'color:red': '';
     response.json()
       .then(tasklist => {
